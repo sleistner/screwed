@@ -1,4 +1,4 @@
-var SCREWED_DIR = environment["screwed.dir"],
+var SCREWED_DIR = environment['screwed.dir'],
     SCREW_UNIT_DIR = SCREWED_DIR + '/screw-unit';
 
 load(SCREWED_DIR + '/screwed.js');
@@ -10,7 +10,7 @@ Screwed.CommandLine = {
     },
 
     prepareFilenameForRequireBasedOnSpecDirectory: function(filename){
-        if (filename === null || filename[0] == "/") { return filename; }
+        if (filename === null || (/^\//).test(filename)) { return filename; }
         return (this.specDirname === null) ? filename : (this.specDirname + "/" + filename);
     },
 
