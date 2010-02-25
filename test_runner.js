@@ -55,7 +55,7 @@ if (Screwed.loaded !== true) {
 
     var helper = new java.io.File(SCREWED_DIR + '/../../screwed_helper.js');
     if (helper.exists()) {
-        require(helper.toURL());
+        load(helper.toURL());
     }
 
     Envjs(Screwed.CommandLine.fixtureFile, {
@@ -65,13 +65,13 @@ if (Screwed.loaded !== true) {
     Screwed.requireCommons(SCREWED_DIR, SCREW_UNIT_DIR);
     require(SCREWED_DIR + '/consoleReportForRake.js');
 
-    JSMocka.Integration.ScrewUnit();
+    Screwed.integrate();
     Screwed(function() { fire('before'); });
 
     print("Running " + Screwed.CommandLine.specFile + " with fixture '" + Screwed.CommandLine.fixtureFile + "'...");
     Screwed.loaded = true;
 
-    require(Screwed.CommandLine.specFile);
+    load(Screwed.CommandLine.specFile);
     jQuery(window).trigger('load');
 
     Screwed(function() { fire('after'); });

@@ -38,6 +38,18 @@ Screwed.requireCommons = function(screwed_dir, screw_unit_dir) {
     require(screw_unit_dir + '/screw.events.js', { system: true });
     require(screw_unit_dir + '/screw.behaviors.js', { system: true });
     require(screwed_dir + '/js-mocka-minified.js', { system: true });
+    require(screwed_dir + '/nwevents.js', { system: true });
+};
+
+Screwed.integrate = function() {
+    JSMocka.Integration.ScrewUnit();
+    jQuery.extend(Screw.Matchers, {
+        fire: function (query, type) {
+            jQuery(query).each(function (i, node) {
+                NW.Event.dispatch(node, type, false);
+            });
+        }
+    });
 };
 
 if (typeof document !== 'undefined') {
@@ -110,7 +122,7 @@ if (typeof document !== 'undefined') {
         Screwed(function() {
             before(function() {
                 Screwed.loaded = true;
-                JSMocka.Integration.ScrewUnit();
+                Screwed.integrate();
                 if (!(/suite(-.*?)?\.html/).test(document.location)) {
                     require(Screwed.Browser.deriveSpecNameFromCurrentFile());
                 }
