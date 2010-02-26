@@ -5,8 +5,9 @@ load(SCREWED_DIR + '/screwed.js');
 
 Screwed.CommandLine = {
 
-    require: function(file) {
-        load(this.prepareFilenameForRequireBasedOnSpecDirectory(file));
+    require: function(file, options) {
+        options = options || {};
+        load(options.system ? file : this.prepareFilenameForRequireBasedOnSpecDirectory(file));
     },
 
     prepareFilenameForRequireBasedOnSpecDirectory: function(filename){
@@ -49,9 +50,9 @@ if (Screwed.loaded !== true) {
 
     // Mock up the Firebug API for convenience.
     var console = console || { "debug": Screwed.CommandLine.debug };
-    var require = function(file) { Screwed.CommandLine.require(file); };
+    var require = function(file, options) { Screwed.CommandLine.require(file, options); };
 
-    require(SCREWED_DIR + "/env.rhino.js");
+    load(SCREWED_DIR + "/env.rhino.js");
 
     var helper = new java.io.File(SCREWED_DIR + '/../../screwed_helper.js');
     if (helper.exists()) {
@@ -63,7 +64,7 @@ if (Screwed.loaded !== true) {
     });
 
     Screwed.requireCommons(SCREWED_DIR, SCREW_UNIT_DIR);
-    require(SCREWED_DIR + '/consoleReportForRake.js');
+    load(SCREWED_DIR + '/consoleReportForRake.js');
 
     Screwed.integrate();
     Screwed(function() { fire('before'); });
@@ -76,3 +77,4 @@ if (Screwed.loaded !== true) {
 
     Screwed(function() { fire('after'); });
 }
+
